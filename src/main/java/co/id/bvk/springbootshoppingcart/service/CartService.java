@@ -68,5 +68,17 @@ public class CartService {
     public void deleteItemFromCart(Cart cart, Long itemId) {
         List<CartItem> cartItems = cart.getCartItems();
         cartItems.stream().filter(cartItem -> !itemId.equals(cartItem.getItem().getId())).collect(Collectors.toList());
+
+        cart.setCartItems(cartItems);
+        cartRepository.save(cart);
     }
+
+    public BigDecimal getTotalAmountCart(Cart cart){
+        List<CartItem> cartItems = cart.getCartItems();
+        BigDecimal totalAmount = cartItems.stream().map(cartItem -> cartItem.getSubTotal()).reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        return totalAmount;
+    }
+
+
 }

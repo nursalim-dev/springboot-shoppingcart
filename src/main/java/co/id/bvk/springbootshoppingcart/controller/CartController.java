@@ -7,7 +7,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("v1/api/carts")
@@ -37,5 +40,15 @@ public class CartController {
             cartService.deleteItemFromCart(cart, itemId);
         }
         return  new ResponseEntity<>(cart, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/totalAmount")
+    public ResponseEntity<Object> getTotalAmountCart(@RequestHeader(value = "cartId") Long cartId) {
+        Cart cart = cartService.getCart(cartId);
+        BigDecimal totalAmountCart = cartService.getTotalAmountCart(cart);
+        Map<String, BigDecimal> resultMap = new HashMap<>();
+        resultMap.put("totalAmount", totalAmountCart);
+
+        return new ResponseEntity<>(totalAmountCart, HttpStatus.OK);
     }
 }
