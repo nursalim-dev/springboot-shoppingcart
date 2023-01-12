@@ -73,7 +73,7 @@ public class CartService {
         cartRepository.save(cart);
     }
 
-    public BigDecimal getTotalAmountCart(Cart cart){
+    public BigDecimal  getTotalAmountCart(Cart cart){
         List<CartItem> cartItems = cart.getCartItems();
         BigDecimal totalAmount = cartItems.stream().map(cartItem -> cartItem.getSubTotal()).reduce(BigDecimal.ZERO, BigDecimal::add);
 
